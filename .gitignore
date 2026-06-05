@@ -1,0 +1,16 @@
+# IDF build output
+firmware/build/
+firmware/sdkconfig
+firmware/dependencies.lock
+
+# Compiled objects
+algorithms/build/
+**/*.o
+**/*.d
+
+# VSCode
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
