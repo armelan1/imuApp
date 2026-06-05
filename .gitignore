@@ -14,3 +14,4 @@ algorithms/build/
 # Python
 __pycache__/
 *.pyc
+firmware/managed_components/
