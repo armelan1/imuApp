@@ -2,19 +2,16 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_log.h"
-#include "IMUDriver.hpp"
+#include "MPU9250Driver.hpp"
 #include "EspI2CTransport.hpp"
 
 constexpr uint32_t DELAY_TIME_MS{500};
-static const char *TAG = "IMUDriver";
+static const char *TAG = "app";
 
 constexpr gpio_num_t sdaPin{GPIO_NUM_7};
 constexpr gpio_num_t sclPin{GPIO_NUM_6};
 constexpr uint32_t clockSpeed{400000};
 const i2c_port_t i2cPort{I2C_NUM_0};
-
-constexpr uint8_t DEV_ADDR{0x68};
-constexpr uint8_t WHO_AM_I{0x75};
 
 extern "C" void
 app_main(void)
@@ -28,26 +25,21 @@ app_main(void)
         abort();
     }
 
-    IMUDriver myIMU{transport};
+    MPU9250Driver driver{transport};
 
-    if (!myIMU.init())
+    if (!driver.init())
     {
         ESP_LOGI(TAG, "Error, could not initialize imu driver");
         abort();
     }
 
-    constexpr size_t SIZE{1};
-    uint8_t data[SIZE];
+    IIMUDriver& imu = driver;
 
     while (true)
     {
 
-        if(!transport.read(DEV_ADDR, WHO_AM_I, data, SIZE))
-        {
-            ESP_LOGI(TAG, "Error, could not read imu id register");
-            abort();
-        }
-        ESP_LOGI(TAG, "WHO_AM_I: 0x%02X", *data);
+        accelData = imu.getAccel();
+        ESP_LOGI(TAG, "accel x: %.2f", accelData.x);
 
         vTaskDelay(pdMS_TO_TICKS(DELAY_TIME_MS));
     }
