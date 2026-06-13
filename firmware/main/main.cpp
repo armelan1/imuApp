@@ -7,6 +7,8 @@
 #define NEOPIXEL_PIN    39
 #define NEOPIXEL_POWER  38
 
+constexpr size_t DELAY_TIME_MS{1000};
+
 extern "C" void app_main(void)
 {
     // Power up the NeoPixel
@@ -43,10 +45,10 @@ extern "C" void app_main(void)
         // White
         ESP_ERROR_CHECK(led_strip_set_pixel(strip, 0, 16, 16, 16));
         ESP_ERROR_CHECK(led_strip_refresh(strip));
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(DELAY_TIME_MS));
 
         ESP_ERROR_CHECK(led_strip_set_pixel(strip, 0, 0, 0, 0));
         ESP_ERROR_CHECK(led_strip_refresh(strip));
-        vTaskDelay(pdMS_TO_TICKS(500));
+        vTaskDelay(pdMS_TO_TICKS(DELAY_TIME_MS));
     }
 }
