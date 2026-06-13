@@ -1,2 +1,4 @@
 idf_component_register(SRCS "IMUDriver.cpp"
-                        INCLUDE_DIRS "include")
+                             "EspI2CTransport.cpp"
+                        INCLUDE_DIRS "include"
+                        REQUIRES "driver")

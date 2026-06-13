@@ -15,8 +15,8 @@ public:
                                           _i2cPort(i2cPort) {}
 
     bool init();
-    bool write(const uint8_t, const uint8_t, const uint8_t *, size_t) override;
-    bool read(const uint8_t, const uint8_t, uint8_t *, size_t) override;
+    bool write(const uint8_t deviceID, const uint8_t registerAddress, const uint8_t* data, size_t size) override;
+    bool read(const uint8_t deviceID, const uint8_t registerAddress, uint8_t* data, size_t size) override;
 
 private:
     gpio_num_t _sdaPin;
