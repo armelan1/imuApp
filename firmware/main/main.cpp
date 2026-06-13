@@ -5,7 +5,7 @@
 #include "MPU9250Driver.hpp"
 #include "EspI2CTransport.hpp"
 
-constexpr uint32_t DELAY_TIME_MS{500};
+constexpr uint32_t DELAY_TIME_MS{250};
 static const char *TAG = "app";
 
 constexpr gpio_num_t sdaPin{GPIO_NUM_7};
@@ -40,6 +40,8 @@ app_main(void)
 
         accelData = imu.getAccel();
         ESP_LOGI(TAG, "accel x: %.2f", accelData.x);
+        ESP_LOGI(TAG, "accel y: %.2f", accelData.y);
+        ESP_LOGI(TAG, "accel z: %.2f", accelData.z);
 
         vTaskDelay(pdMS_TO_TICKS(DELAY_TIME_MS));
     }

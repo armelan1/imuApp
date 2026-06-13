@@ -24,7 +24,18 @@ bool MPU9250Driver::init()
 
 imu::AccelData MPU9250Driver::getAccel() const
 {
-    imu::AccelData accelData{1.0f, 2.0f, 3.0f};
+    imu::AccelData accelData{};
+    constexpr size_t SIZE{6};
+    uint8_t buffer[SIZE];
+    if(!_transport.read(DEV_ADDR, ACCEL_XOUT_H, buffer, SIZE))
+    {
+        ESP_LOGI(TAG, "Error, could not read accelerometer data");
+        return accelData;
+    }
+    accelData.x = parseRaw(buffer, 0) / ACCEL_2G_LSB;
+    accelData.y = parseRaw(buffer, 2) / ACCEL_2G_LSB;
+    accelData.z = parseRaw(buffer, 4) / ACCEL_2G_LSB;
+
     return accelData;
 }
 
@@ -38,4 +49,9 @@ imu::MagData MPU9250Driver::getMag() const
 {
     imu::MagData magData{1.0f, 2.0f, 3.0f};
     return magData;
+}
+
+int16_t MPU9250Driver::parseRaw(const uint8_t* buf, size_t offset)
+{
+    return (int16_t)((buf[offset] << 8) | buf[offset + 1]);
 }
